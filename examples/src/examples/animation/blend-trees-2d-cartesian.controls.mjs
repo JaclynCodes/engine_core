@@ -124,15 +124,24 @@ export const controls = ({ React, jsx, fragment }) => {
         componentDidMount() {
             const { canvas, app } = this;
             // console.log("componentDidMount()", { canvas, app });
-            canvas.addEventListener('mousemove', this.mouseEvent.bind(this));
-            canvas.addEventListener('mousedown', this.mouseEvent.bind(this));
-            canvas.addEventListener('touchmove', this.mouseEvent.bind(this));
-            canvas.addEventListener('touchstart', this.mouseEvent.bind(this));
+            this.boundMouseEvent = this.mouseEvent.bind(this);
+            canvas.addEventListener('mousemove', this.boundMouseEvent);
+            canvas.addEventListener('mousedown', this.boundMouseEvent);
+            canvas.addEventListener('touchmove', this.boundMouseEvent);
+            canvas.addEventListener('touchstart', this.boundMouseEvent);
             if (!app) {
                 console.warn('no app');
                 return;
             }
             this.onAppStart();
+        }
+
+        componentWillUnmount() {
+            const { canvas } = this;
+            canvas.removeEventListener('mousemove', this.boundMouseEvent);
+            canvas.removeEventListener('mousedown', this.boundMouseEvent);
+            canvas.removeEventListener('touchmove', this.boundMouseEvent);
+            canvas.removeEventListener('touchstart', this.boundMouseEvent);
         }
 
         render() {
