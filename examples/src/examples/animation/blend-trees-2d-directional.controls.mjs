@@ -78,6 +78,11 @@ export const controls = ({ React, jsx, fragment }) => {
         };
         canvas.addEventListener('mousemove', mouseEvent);
         canvas.addEventListener('mousedown', mouseEvent);
+
+        return () => {
+            canvas.removeEventListener('mousemove', mouseEvent);
+            canvas.removeEventListener('mousedown', mouseEvent);
+        };
     });
     return fragment(jsx('canvas', { ref: canvasRef }));
 };
